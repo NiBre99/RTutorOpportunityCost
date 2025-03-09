@@ -1,0 +1,12 @@
+Package: RTutorOpportunityCost
+Type: Package
+Title: RTutor problem set TheOpportunityCostofDebtAversion
+Version: 0.1
+Date: 2025-09-03
+Author: Nils Breuning
+Maintainer: Nils Breuning <breuningnils@gmail.com>
+Description: RTutor problem set TheOpportunityCostofDebtAversion
+License: Not yet licensed by the author. The default suggestion for licensing is
+	Problem set content: Creative Commons (CC BY-SA)
+	Package code: GPL >= 2.0
+Depends: RTutor, ggplot2, readr, dplyr, shiny, knitr, stargazer, scales, kableExtra, sandwich, tidyr, forcats

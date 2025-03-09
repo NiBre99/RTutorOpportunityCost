@@ -1,0 +1,1189 @@
+
+```{r 'check_ps', include=FALSE}
+
+user.name = 'ENTER A USER NAME HERE'
+```
+
+# The Opportunity Cost of Debt Aversion
+
+Author:  Nils Breuning
+
+
+
+## Exercise Overview
+
+Debt plays a central role in modern economies, influencing decisions at both the individual and institutional levels. Whether in personal finance, business investments, or public policy, the ability to effectively manage debt is crucial for financial stability and long-term growth. While traditional economic theory assumes that individuals and firms make rational financial decisions by weighing costs and benefits, behavioral research has shown that psychological factors often distort these choices. One such bias is debt aversion, where individuals display a strong preference for debt repayment over financially optimal investment strategies.
+
+Understanding this phenomenon is essential, as it can have far-reaching implications. Individuals who avoid borrowing, even when faced with high-return investment opportunities—such as education, entrepreneurship, or technological adoption—may experience lower financial mobility and reduced long-term wealth accumulation. Similarly, businesses that are overly cautious about debt might miss strategic expansion opportunities, limiting their competitive advantage. These behavioral tendencies challenge the assumption that access to credit alone is sufficient for economic progress, highlighting the need to examine how people perceive and react to debt.
+
+In their paper, The Opportunity Cost of Debt Aversion (2024), Alejandro Martínez-Marquina and Mike Shi investigate this issue through a controlled experiment. The opportunity cost in this context refers to the financial gains forgone when individuals prioritize debt repayment over higher-yielding investment opportunities. Instead of maximizing returns, debt-averse individuals allocate resources toward eliminating debt, even when keeping it would be economically beneficial. Their study explores how individuals allocate financial resources when faced with debt, revealing that many prioritize repayment at the expense of wealth accumulation. This behavior, driven by psychological discomfort with debt, might lead to suboptimal financial decisions that can hinder both personal and economic growth.
+
+This RTutor (Kranz, 2020) problem set is part of my Bachelor thesis and designed to replicate and explore key insights from their study, providing an interactive framework to analyze the impact of debt aversion on financial decision-making. By examining experimental data and engaging with core concepts, we aim to deepen our understanding of how psychological biases shape financial behavior and what implications this has for broader economic decision-making.
+
+**Important Notes**:
+
+The full paper by Martínez-Marquina and Shi (2024) can be accessed here: https://doi.org/10.1257/aer.20221509
+
+This problem set replicates key findings from Martínez-Marquina and Shi (2024), using their publicly available experimental dataset from the openICPSR repository (AER-2022-1509) under a Creative Commons Non-Commercial license. All credit for data collection belongs to the original authors.
+
+Various analyses, regressions, and visualizations are direct replications of the original study, following its methodology and data structure. While independently executed, they are designed to maintain consistency with the published results, ensuring accurate representation of the study’s findings.
+
+For figures and regressions requiring additional data preparation, a dedicated preprocessing file (graphic_data.R) is included as an extra.code.file within the directory. This file is directly connected to the problem set, meaning that in multiple cases, users do not need to manually read in data—the required datasets are preprocessed and stored in a format that can be used immediately. The purpose of this setup is to offload complex data preparation and avoid unnecessary table creation, thereby enhancing clarity and making it easier for users to focus on interpreting results rather than handling raw data transformations.
+
+**Structure of This Problem Set**
+
+1. The Main Treatments
+
+    – Understanding the experimental design and initial data analysis.
+
+2. Behavior with Debt
+
+    – Exploring how participants react to increased debt levels and whether they follow optimal financial strategies.
+
+3. Additional Treatments
+
+    – Examining variations of the experiment and how different conditions affect debt-related decision-making.
+
+4. Debt Aversion
+
+    – Literature review and theroretical model
+
+5. Conclusion
+
+    – Summarizing key findings and policy implications.
+
+References
+
+    – Providing citations and further readings.
+
+R Packages
+
+    – Listing essential R packages used in this problem set.
+
+**How to Use This Problem Set**
+
+This problem set is interactive. To work through the exercises, you can:
+
+- Click "Edit" to modify the code in a task.
+
+- Click "Run Chunk" to execute the code and see the output.
+
+- Click "Check" to test whether your solution is correct.
+
+💡 Tip: If you are unsure how to proceed with a task, look for hints or review the explanations provided in each exercise.
+
+👉 Now, let’s get started and explore the fascinating effects of debt aversion on financial decision-making! 🚀
+
+## Exercise 1 -- The main treatments
+
+a) **The Experimental Design**
+
+This study investigates how debt influences financial decision-making, particularly whether individuals prioritize debt repayment over maximizing investment returns. Prior research suggests that individuals often experience psychological discomfort from holding debt, leading them to favor repayment even when alternative allocations could yield greater financial gains (Prelec & Loewenstein, 1998). Expanding on these insights, this experiment employs a controlled framework to isolate the behavioral effects of debt aversion on investment decisions.
+Participants were randomly assigned to financial conditions that varied in their exposure to debt. Each participant managed multiple virtual accounts, with some holding positive balances (representing savings) and others starting with negative balances (representing debt). These accounts generated fixed interest returns, ensuring that any differences in decision-making stemmed from participants' responses to debt rather than external financial factors.
+A key feature of the experiment was the dynamic allocation process, where participants strategically distributed an initial endowment across their accounts over multiple decision rounds. This setup mirrored real-world financial decision-making, where past allocations impact future investment opportunities. However, not all accounts remained accessible—some were restricted from direct allocations but continued accumulating interest, allowing for a causal comparison of financial behavior under different debt conditions.
+Participants made four financial allocation decisions over the course of a week, with their choices determining their final earnings. This design provided sufficient time for thoughtful decision-making while maintaining experimental control.
+By structuring the experiment this way, the study aimed to provide causal evidence on debt’s influence on financial priorities. Unlike observational studies, where pre-existing characteristics may confound results, this controlled setting ensured that any observed behavioral differences arose specifically from debt exposure rather than external economic conditions.
+
+**Optimal Strategy & Behavioral Insights**
+
+In this experiment, the most financially efficient strategy is to allocate all available points to the highest-interest account, **Savings 1**, during every decision round. This approach ensures maximum cumulative returns over time due to the compounding effect of interest. Any deviation from this strategy leads to lower overall financial gains, making it a suboptimal decision from a rational investment perspective.
+Given this setup, the authors expect that rational participants will always prioritize the highest-yielding investment, as there is no uncertainty about returns or external financial risks. Since all accounts generate fixed interest rates, the optimal strategy is entirely determined by the interest rate structure, meaning that participants should consistently allocate all available funds to **Savings 1** to maximize their earnings.
+However, the study also considers the possibility that participants may deviate from this optimal strategy due to behavioral biases, particularly debt aversion. If individuals perceive debt as psychologically burdensome, they might prioritize debt repayment over return-maximizing investments, even when doing so is financially suboptimal. This would suggest that psychological factors, rather than purely financial incentives, influence decision-making in the presence of debt.
+
+The following information box provides an overview of how participants were selected and assigned to treatment groups.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("Recruitment and Sample Size")
+```
+
+***Task:*** Please display *table_1* by writing its variable name inside the code chunk and clicking "Check". This will generate Table 1, which provides an overview of the account structure in the main treatments.
+If you would like to review the preparation steps or see how the tables were generated, you can open the preparation file (graphic_data.R), where all preprocessing steps and table creation processes are documented.
+
+```{r "2_a",out.width='100%'}
+# Enter your code here.
+```
+
+Table 1 presents an overview of the accounts in the two main treatment groups, No-Debt and Low-Debt, detailing their respective balances and interest rates. While key financial parameters such as total balances and aggregate returns remain identical across treatments, the primary distinction lies in which accounts are locked. In the no-debt treatment, participants cannot allocate points to debt 1 and debt 2, both of which start with a zero balance. In the low-debt treatment, savings 3 and savings 4 are locked instead, while debt 1 and debt 2 begin with negative balances. Despite these structural differences, the total sum of balances remains 4,200 points, and total interest-generated returns amount to 500 points, ensuring comparability across conditions.
+Debt was introduced in the low-debt treatment by adjusting which accounts were locked, while ensuring that initial net wealth and interest rate structures remained identical across groups. The combined balances of savings 3 and debt 1, as well as savings 4 and debt 2, were structured to maintain equivalency across treatments. This design ensured that the presence of debt was introduced as an experimental factor without altering the overall financial constraints faced by participants (Martínez-Marquina & Shi, 2024).
+This controlled variation allows researchers to examine whether participants prioritize debt repayment at the expense of return-maximizing investments. Since debt in the low-debt condition can be fully repaid within a few days, the study provides a clean test of how debt aversion influences financial decision-making.
+
+b) **Introduction to the Data**
+
+First of all, we want to load the main Data **main_work.csv**. It contains various variables of the main treatments in the experiment.
+
+***Task***: Please load the Data **main_Work.csv** with the function **read_csv()** out of the **readr** package and store it in the variable **mainWork**. Keep in mind, that you have to load required packages first. After this look at the code output and pick the correct answer to solve the quiz.
+
+```{r "2_b"}
+# Enter your code here.
+```
+
+
+Quiz: How many variables does our data contain?
+
+(1) 1290
+(2) 165
+(3) There is another amount of variables.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("dimension experimental data")
+```
+
+As we observed, the dataset contains many variables. Some of them represent financial data, such as account balances and allocation decisions. Others provide experimental structure information, including treatment group identifiers and decision timestamps. Additionally, the dataset includes participant-specific details, such as demographics and performance measures.
+
+Now we will filter our data by treatment group and display a subset of the data for the first participant. This will help us gain a better understanding of the experimental design in the main treatments. As observed earlier, the dataset contains various variables. To avoid confusion, we will select only the columns that are most relevant for a basic understanding.
+
+For a description of the variables we are filtering, click on the info box below.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("variable description")
+```
+
+
+***Task***: We assign the **mainWork** Data filtered for treatment-group **No Debt (0)** to **main0** and show the first 4 rows of it by using the head() function. You won't have to write any code here. Just run and check the given code and look at the output.
+
+```{r "2_b_2",out.width='100%'}
+
+#loading necessary package
+library(dplyr)
+#pipe chain to get relevant data
+main0<-mainWork%>%
+        select(day, participantid, treatment, initialendowment, pointssaving1, pointssaving2, pointssaving3, pointssaving4, pointsdebt1, pointsdebt2)%>%
+        filter(treatment==0)
+#show results
+head(main0, 4)
+
+```
+
+Here, we can see the data of a single participant from the No-Debt treatment group. In the leftmost column, we observe data for the four allocation days during the experiment, represented by the variable **day**. Additionally, the variable **initialendowment** indicates the amount the participant was able to allocate on a given allocation day. As expected, all participants, including this one, started with 500 points available for allocation at the beginning of the experiment.
+The six columns to the right of **initialendowment** display how the participant distributed points across different accounts. Since we are analyzing data from a No-Debt participant, the variables **pointsdebt1** and **pointsdebt2** contain only zeros. These accounts were locked for subjects in this treatment group, meaning they were unable to allocate any points to them.
+An interesting observation is that the participant did not follow the return-maximizing strategy. On Day 1, instead of allocating all points to **Savings 1**, which offers the highest interest rate, the participant distributed points across all four available accounts. Moreover, this non-optimal behavior persisted across all four allocation decisions.
+As previously mentioned, the dataset contains many additional variables, though not all are essential for understanding the experimental design. However, if you would like to explore more details, feel free to check the variable description available in the data explorer.
+
+Since there is also another treatment group in the main treatments, we would also want to take a look on the data here again. 
+As you probably noticed in the code before, we used pipelines (%>%) in order to connect functions with each each other. This is a key feature of the **dplyr** package. If you are not used to this R package, please read the info box below before you start over with the next exercise.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("dplyr")
+```
+
+***Task***: Please replicate the code of the chunk before for the treatment group 'Low-Debt' (= 1). Store the data in **main1**.
+
+```{r "2_b_3",out.width='100%'}
+# Enter your code here.
+```
+
+Looking at the second table, we can observe another interesting behavior. The participant from the Low-Debt treatment group started on Day 1 by allocating all 500 points to **Debt 1**. On Day 2, the participant fully repaid the remaining 400 points of **Debt 1** and then invested all subsequent returns into **Savings 1** until the end of the experiment. This pattern suggests that the participant prioritized debt repayment first before focusing on maximizing returns.
+As a result, the participant did not follow the return-maximizing strategy, as they initially chose to repay one of the debt accounts instead of allocating points to a higher-yielding investment option. By doing so, they missed out on potentially better investment opportunities.
+
+c) **Create Initial Analyses**
+
+Our findings in the exercise before do not make us able to analyse the behavior of all of the subjects. This is why we will now compute a first graphic to see results for entire treatment groups of the main treatment. By this we can get a feeling about the behavior of the entire groups.
+
+To get nice graphics in R, we will use the **ggplot2** package. If you want to get basic information about this package, just click at the info box below.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("creating graphics with ggplot2")
+```
+
+***Task***: Please fill out the blanks to run the given code which produces a barchart of the initial allocation shares of the treatments **No Debt** and **Low Debt**. 
+Notice, that our data got modified for this before. The data we will need for this is called **plotfigure1**. You won't have to read it in since the preparation file is connected to this problem set. If you want to get further insights in this or other preparations, just open the additional preparation data file in the directory.
+
+```{r "2_c",out.width='85%'}
+library(ggplot2)
+plot1<-ggplot(___, aes(x = share, y = mean_value, fill = share, label = round(mean_value, 2))) +
+ geom_bar(stat = ___, width = 0.7) +
+  geom_text(vjust = -0.5, size = 3) +
+  scale_fill_manual(
+    values = c("Savings 1 (20%)" = "#00509E", "Savings 2 (10%)" = "#77DD77", "Savings 3 / Debt 1 (15%)" = "#800000", "Savings 4 / Debt 2 (5%)" = "#FFC0CB"),
+    name = "Allocation Type"
+  ) +
+  facet_wrap(~ treatmentLabel, scales = "free_y") +
+  labs(subtitle="Own illustration based on Martínez-Marquina & Shi, 2024, p. 1152, 'Figure 1'\n",
+    y = "Initial Allocation Share",
+    fill = " "
+  ) +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    strip.background = element_rect(fill = "white", colour = "black"),
+    strip.text = element_text(face = "bold"),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+ print(___)
+```
+
+As demonstrated in the plot, ggplot2 allows for the creation of clear and informative visualizations.
+
+The resulting figure illustrates how participants allocated their initial endowment on Day 1 across different accounts in the no debt and low debt treatments. While both groups allocated the largest share of their points to the account with the highest interest rate (savings 1), the extent to which they did so varied significantly. In the no debt treatment, 73% of the initial points were allocated to savings 1, whereas in the low debt treatment, only 47% of the endowment was directed there—a difference of 26 percentage points.
+At the same time, participants in the low debt condition allocated a significantly larger share to debt 1 (32%), whereas in the no debt condition, the corresponding account (savings 3) received only 13%, resulting in a 19 percentage point difference. These findings indicate that the presence of debt fundamentally alters allocation behavior: rather than strictly maximizing returns, participants in low debt prioritize repaying debt 1, even though it does not offer the highest return.
+
+This suboptimal strategy is associated with lower overall returns. The authors demonstrate through a regression model that initial allocation decisions in low debt resulted in a 9.9% lower return compared to no debt (15.8% vs. 17.5%, p = 0.001) (Martínez-Marquina & Shi, 2024). If you are unfamiliar with linear regression, check out the info box below for a brief explanation.
+
+To test the robustness of these findings, the authors conducted an additional experiment with 80 more participants, modifying the debt account balances while keeping interest rates constant. If allocation behavior were driven solely by the smaller outstanding balance of debt 1, one would expect a significant shift in allocation patterns. However, the results remained largely unchanged, with only a 4 percentage point reduction in debt 1 allocations (32% vs. 28%). This suggests that while the debt level itself plays a role, the primary driver of behavior is the high interest rate of debt 1.
+
+One possible explanation for this behavior is psychological debt aversion, where individuals experience discomfort from outstanding debt and therefore allocate resources to repaying it, even when financially suboptimal. This aligns with research in behavioral economics, particularly the concept of mental accounting (Thaler, 1985), which suggests that individuals categorize debt separately from other financial decisions. Rather than evaluating all accounts based purely on return maximization, participants may have treated debt repayment as a priority independent of interest rates.
+However, there may be additional explanations for why participants prioritize debt repayment. One possibility is that individuals perceive financial constraints differently when debt is present. Participants in the low debt condition may feel a stronger need to "free up future liquidity," anticipating that debt will create financial burdens in later rounds. Another explanation could be risk aversion—even if debt 1 does not have the highest return, some participants may still view repaying it as a safer option, reducing uncertainty about future payments.
+
+These findings mirror real-world financial behavior, where individuals often prioritize paying off low-interest debt over investing in higher-yielding assets such as stocks. This suggests a potential role for financial education or behavioral interventions to help individuals optimize long-term wealth accumulation. Financial advisors often recommend a balanced approach, where debt repayment is weighed against investment opportunities, ensuring that individuals do not sacrifice long-term financial growth for short-term psychological relief.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("regression")
+```
+
+***Task:*** Run and check the following chunk to analyze the allocation behavior toward the highest-interest account ('Savings 1') in the No Debt and Low Debt treatments for the initial allocation. The variable **share_pointssaving1** provides information about the share of points allocated to **Savings 1** for each subject at the specific allocation day.
+
+```{r "2_c_2"}
+library(stargazer)
+library(sandwich)
+# regression model
+model_reg1 <- lm(share_pointssaving1 ~ treatment, data = mainWork[mainWork$day == 1 & mainWork$treatment <= 1, ])
+
+# Compute robust standard errors (HC1)
+robust_se1 <- vcovHC(model_reg1, type = "HC1")
+
+# show results
+stargazer(model_reg1,type="text",digits= 7, se = list(sqrt(diag(robust_se1))))
+```
+
+We specify a linear regression model (Martínez-Marquina & Shi, 2024) to estimate how the treatment condition (No Debt vs. Low Debt) affects the share of points allocated to Savings 1 (**share_pointssaving1**). In this step, the data was filtered to include only day = 1, capturing the initial allocation decision, and restricted to treatments 0 and 1 (No Debt and Low Debt). The High Debt treatment is excluded and will be analyzed separately in the next task.
+This regression tests whether participants in the Low Debt condition allocate significantly fewer points to Savings 1 compared to those in No Debt. A significant negative coefficient for the treatment variable would indicate that debt influences financial allocation behavior, potentially reflecting debt-biased decision-making. The stargazer function is used to format the regression output for better readability.
+
+The dataset consists of 172 observations, meaning the analysis includes data from 172 participants. The constant term in the regression represents the baseline value for the No Debt treatment group, as treatment is a binary variable where No Debt = 0. The coefficient of the constant is 0.7267442, meaning that, on average, 72.7 percent of the allocated points in the No Debt treatment were directed to Savings 1. This estimate is highly statistically significant (p < 0.01), as indicated by the triple asterisks.
+To determine the corresponding value for the Low Debt group, we add the treatment coefficient to the constant. Since treatment is coded as a binary variable (No Debt = 0, Low Debt = 1), this coefficient captures the change in allocation behavior due to debt exposure. The treatment coefficient of -0.2608837 suggests that, on average, the share of points allocated to Savings 1 in the Low Debt condition was 26 percentage points lower than in No Debt. The total share allocated to Savings 1 in Low Debt is therefore:
+
+0.7267442 - 0.2608837 = 0.4659 (approximately 47 percent)
+
+This means that, on average, 47 percent of the initially allocated points in the Low Debt treatment were directed to Savings 1, a significant decrease compared to No Debt. The treatment coefficient is highly statistically significant (p < 0.01), reinforcing that this shift in allocation behavior is not due to random variation but rather a systematic response to the presence of debt.
+The R² value of 0.157 indicates that the model explains 15.7 percent of the variance in **share_pointssaving1**. While this might seem low, this is not a major concern, as the primary goal is not prediction but rather to assess the treatment effect. The key finding is that there is a statistically significant difference between the No Debt and Low Debt groups in how they allocate their initial endowment. Since the robust standard errors remain below 0.05, we can be confident in the precision of our estimates.
+
+These results align with the findings from the figure presented earlier, which illustrates that participants in the Low Debt treatment allocated a smaller share of their initial endowment to Savings 1 compared to those in No Debt. The regression analysis statistically supports this pattern by demonstrating that the observed differences are unlikely to be due to random variation. The significant treatment effect suggests that the presence of debt is associated with a shift in allocation behavior, where participants in the Low Debt treatment tend to allocate fewer points to the highest-yielding account. While this behavior may reflect a preference for debt repayment, it also corresponds to lower financial returns relative to a strictly return-maximizing strategy.
+
+Since we observed in the figure that the other major difference in allocation behavior between the groups lies in the initial share of points allocated to Debt 1 in the Low Debt treatment and the corresponding account, Savings 3, in the No Debt treatment, we now extend our analysis to examine this aspect. By running a similar regression (Martínez-Marquina & Shi, 2024), we aim to assess whether the presence of debt is associated with a systematic shift in allocation toward these accounts, just as the results for Savings 1 suggest.
+
+***Task:*** Please run and check the chunk and interpret our regression output correctly by solving the quiz.
+```{r "2_c_3"}
+# get data
+data_reg2 <- mainWork
+
+# create new variable
+data_reg2$share_a3_initial <- data_reg2$share_pointssaving3
+
+# no na's
+data_reg2$share_a3_initial[data_reg2$treatment != 0 & !is.na(data_reg2$share_pointsdebt1)] <- 
+data_reg2$share_pointsdebt1[data_reg2$treatment != 0 & !is.na(data_reg2$share_pointsdebt1)]
+
+# regression model
+model_reg2 <- lm(share_a3_initial ~ treatment, data = subset(data_reg2, day == 1 & treatment <= 1))
+
+# Compute robust standard errors (HC1)
+robust_se2 <- vcovHC(model_reg2, type = "HC1")
+
+# show results
+stargazer(model_reg2,type="text",digits= 7, se = list(sqrt(diag(robust_se2))))
+
+```
+
+
+Quiz: Based on the regression results, which of the following statements is correct?
+
+(1) The coefficient labeled constant represents the initial allocation share for Low Debt, as we saw earlier.
+(2) By adding the constant coefficient and the treatment coefficient, we obtain the share of points allocated to Debt 1 by subjects in Low Debt treatment.
+(3) Since the R² value is only 0.1279, our findings are statistically meaningless.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("regtable")
+```
+
+After analyzing the regression output (Martínez-Marquina & Shi, 2024), we can now examine its implications in more detail. The results indicate a distinct difference in allocation behavior between the treatment groups. In the No Debt condition, the share of allocated points directed to Savings 3 was 12.9 percent, as captured by the constant term. In the Low Debt condition, this allocation pattern shifted, with 31.7 percent of the allocated points directed toward Debt 1 instead. This value is obtained by summing the constant and treatment coefficients (0.1294 + 0.1880).
+The treatment coefficient of 0.1880 indicates that, on average, Low Debt participants allocated 18.8 percentage points more to Debt 1 than No Debt participants did to Savings 3. This shift is highly statistically significant (p < 0.01), confirming that the observed difference in allocation is unlikely to be due to random variation. The results suggest that the presence of debt is systematically associated with a reallocation of funds away from savings and toward debt repayment. While this pattern aligns with the behavioral tendencies observed in the earlier figure, it is important to note that the regressions do not establish a direct causal mechanism but rather provide statistical confirmation that allocation patterns differ systematically between the groups. The authors interpret these differences as evidence that debt influences financial decision-making by shifting participants' focus toward repayment, often leading them to deviate from payoff-maximizing behavior (Martínez-Marquina & Shi, 2024).
+Although the R² value is relatively low (0.128), this is not a concern, as the goal of this analysis is to estimate the treatment effect rather than explain the full variance in allocation choices. 
+
+To gain deeper insights into participants' financial decision-making, we now examine return-maximizing behavior not only in the initial allocation but also **across all allocation decisions throughout the experiment**.
+
+d) **Behavior across all decisions**
+
+Next, we will visualize the proportion of participants in each treatment group who maximized returns in all allocation decisions using a bar plot (Martínez-Marquina & Shi, 2024, p. 1153, "Figure 2"). 
+To achieve this, we will first prepare our mainWork dataset. 
+For clarification, **ind_optimal_ia_all** is a binary (dummy) variable that takes values of 0 or 1 (1 = yes, 0 = no), indicating whether a participant consistently followed a return-maximizing strategy across all initial allocations.
+
+***Task:*** Filter mainWork for day == 4 and treatment <= 1, then group by treatment. Use summarise() to calculate **mean_optimal**, which should be representing the average of **ind_optimal_ia_all**. Store the transformed data in **data_fig2**.
+
+```{r "2_d"}
+
+data_fig2 <- mainWork %>%
+    filter(day == 4 & treatment <=1)%>%
+    group_by(treatment) %>%
+    summarise(
+      mean_optimal = mean(ind_optimal_ia_all)
+    )
+```
+
+Now that you have prepared the data for our plot, it is time to visualize it.
+
+***Task:*** Just check the given code, look at the plot and answer the question.
+
+```{r "2_d_2",out.width='85%'}
+
+# create barplot and text
+plot2 <- ggplot(data_fig2, aes(x = ifelse(treatment == 0, 0.2, 0.8), y = mean_optimal, , fill = factor(treatment))) +
+  geom_bar(stat = "identity", width = 0.3) +
+  
+  geom_text(
+    data = data_fig2 %>% filter(treatment == 0 | treatment == 1),  
+    aes(label = sprintf("%.2f", mean_optimal)),
+    vjust = -0.5, hjust = 0.5, size = 4
+  ) +
+  # specify axes
+  scale_x_continuous(
+    breaks = c(0.2, 0.8),
+    labels = c("No Debt", "Low Debt"),
+    limits = c(-0.1, 1)
+  ) +
+  scale_y_continuous(
+    breaks = seq(0,0.5, by = 0.1),
+    limits = c(0, 0.5)
+  ) +
+  
+  # colors for bars
+  scale_fill_manual(
+    values = c("0" = "blue", "1" = "maroon"),
+    labels = c("No Debt", "Low Debt")
+  ) +
+  
+  # titel and design
+  labs(
+    y = "Percent of Subjects",
+    x = "Return-maximizing in all decisions\n \nOwn illustration based on Martínez-Marquina, A., & Shi, M., 2024, p. 1153, 'Figure 2'"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.y = element_text(size = 12),
+    axis.text = element_text(size = 10),
+    legend.position = "none",  
+    plot.margin = unit(c(1, 1, 1, 1), "cm")
+  )
+
+print(plot2)
+
+```
+ 
+
+Quiz: Does the resulting plot match with our first findings from above?
+
+(1) Yes, it does. Here we can see that again many more subjects without debt maximize returns compared to subjects with debt.
+(2) Partly.
+(3) No, it doesn't.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("return-maximizing")
+```
+
+The resulting plot illustrates the proportion of participants in No Debt and Low Debt who consistently maximized returns across all initial allocations. The data clearly shows that 38% of No Debt participants followed a fully return-maximizing strategy, compared to only 13% in Low Debt.
+This 25 percentage point difference suggests that participants in the Low Debt condition were less likely to engage in financially optimal decision-making.
+These results are consistent with our previous findings on initial allocations, reinforcing the conclusion that participants in Low Debt systematically deviate from return-maximization—not only in their first decision but persistently across all decision rounds.
+To further substantiate these findings, we will now examine whether the observed differences in return-maximizing behavior between No Debt and Low Debt are statistically significant, following the same approach as before.
+
+***Task:*** Please fill in the blanks to complete the regression model. 
+Note that we first filter our mainWork dataset. Our dependent variable will be **ind_optimal_ia_all**.
+We estimate the effect of the treatment (No Debt vs. Low Debt) on return-maximizing behavior using a linear regression (lm()).
+
+```{r "2_d_3"}
+
+#Filter for 'day == 4' and 'treatment <= 1'
+data_filtered <- mainWork%>%filter(day == 4 & treatment <= 1)
+
+model_reg3 <- lm(___ ~ ___, data = data_filtered)
+
+# Compute robust standard errors (HC1)
+robust_se3 <- vcovHC(model_reg3, type = "HC1")
+
+# show results
+stargazer(___, type="text",digits=7, se = list(sqrt(diag(robust_se3)))) 
+```
+
+The regression results (Martínez-Marquina & Shi, 2024) provide statistical confirmation of the patterns observed in the figure before. The constant coefficient (0.3837, p < 0.01) indicates that 38.4% of No Debt participants consistently maximized returns across all decisions, aligning with the values reported before.
+The treatment coefficient (-0.2558, p < 0.01) indicates that participants in Low Debt were 25.6 percentage points less likely to engage in consistent return-maximizing behavior. This finding strengthens the conclusion that debt significantly influences financial decision-making—not only at the initial allocation stage but also persistently across all periods. 
+
+In contrast to the previous regression results, the robust standard errors in this model exceed the 0.05 threshold. Specifically, the standard error for the treatment coefficient is 0.06399, and for the constant term, it is 0.05275. This indicates a slightly higher level of uncertainty in these estimates compared to the previous models. Nevertheless, both coefficients remain statistically significant at the 1% level, as indicated by the triple asterisks (***).
+Although the R² value is relatively low (0.0859), this is expected, as the model is designed to isolate the treatment effect rather than maximize explanatory power. The strong statistical significance of the treatment coefficient reinforces the robustness of the findings.
+
+While this regression demonstrates that debt reduces the likelihood of return-maximizing behavior, it does not account for potential individual differences. In the next step, we extend the model by incorporating demographic controls to assess whether the debt effect remains significant when considering additional explanatory variables (similar to the authors analysis).
+
+For more information on these control variables, check the info box below.
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("controll variables")
+```
+
+***Task:*** Please run and check the code below. After this, please interpret the output by solving the quiz.
+
+```{r "2_d_4"}
+
+# Regression model
+model_reg4 <- lm(ind_optimal_ia_all ~ treatment + demo_age_median + demo_sex + demo_white + demo_collegeplus + demo_studentloan + demo_holddebt + factor(demo_covid) + error_count_total, data = data_filtered)
+
+# Compute robust standard errors (HC1)
+robust_se4 <- vcovHC(model_reg4, type = "HC1")
+
+# show results
+stargazer(model_reg4, type="text", digits=7, se = list(sqrt(diag(robust_se4))))
+```
+
+
+Quiz: How does the inclusion of additional control variables affect the treatment effect in the second regression?
+
+(1) The treatment effect disappears, indicating that differences in return-maximizing behavior between No Debt and Low Debt were entirely driven by other factors.
+(2) The treatment effect remains significant but slightly decreases.
+(3) The treatment effect increases, meaning that controlling for other variables reveals an even stronger negative impact of debt on return-maximizing behavior.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("regression")
+```
+
+This second regression (Martínez-Marquina & Shi, 2024) expands the initial model by incorporating demographic characteristics and error tendencies to assess whether the treatment effect of Low Debt persists after controlling for additional individual factors.
+
+The results confirm the hypothesis that debt significantly reduces the likelihood of consistently maximizing returns, even when accounting for individual differences. The treatment coefficient (-0.2404, p < 0.01) indicates that participants in Low Debt are 24.0 percentage points less likely to be return maximizers compared to those in No Debt. While this effect slightly decreases compared to the first regression (-0.2558 → -0.2404), it remains highly significant, suggesting that debt itself continues to bias financial decision-making, independent of other individual characteristics.
+A notable addition in this model is **error_count_total** (-0.0154, p < 0.01), which is also statistically significant. This suggests that individuals who made more mistakes during the experiment were systematically less likely to follow a return-maximizing strategy, reinforcing the idea that decision-making errors contribute to suboptimal financial choices. 
+
+However, since the treatment effect remains strong, debt is not merely associated with poor financial decisions—it actively biases choices, leading to persistently lower financial returns.
+Interestingly, demographic variables such as age (-0.0658), gender (0.0835), education (0.0924), and prior debt experience (-0.0295) do not exhibit statistically significant effects. This suggests that differences in financial background do not drive return-maximizing behavior in this setting. Additionally, the inclusion of COVID-related controls does not alter the results, indicating that external pandemic-related factors had no significant influence on financial decision-making in this experiment.
+Although the R² increases from 0.0859 to 0.2078, meaning that individual characteristics explain a greater share of variation in decision-making, the persistence of the treatment effect highlights the unique role of debt in shaping financial behavior. 
+
+In this extended regression model, several coefficients exhibit robust standard errors exceeding the 0.05 threshold, indicating a higher degree of uncertainty in these estimates. Notably, the standard error for the treatment coefficient remains at 0.06366, similar to previous models, while other covariates such as demo_age_median (0.07354), demo_white (0.08265), and demo_collegeplus (0.07125) also show elevated standard errors.
+Additionally, categorical variables for demo_covid exhibit relatively large standard errors, particularly demo_covid1 (0.15099) and demo_covid2 (0.14936), which suggests greater variability in these estimates. The larger standard errors in some control variables imply that their effects may be more uncertain and should be interpreted with caution. However, since the highest standard errors are observed primarily for coefficients that are already statistically insignificant, this should not affect the overall interpretation of the model.
+Despite this, key coefficients such as treatment and error_count_total remain statistically significant at the 1% level.
+
+After the inclusion of control variables, the constant is no longer statistically significant. This suggests that when all explanatory variables are set to zero, the predicted value of **ind_optimal_ia_all** does not significantly differ from zero. However, in models with multiple covariates, the intercept often lacks a meaningful interpretation, as the zero values of explanatory variables may not represent a realistic or relevant scenario. Therefore, the lack of significance should not be problematic for the overall interpretation of the results, as the focus remains on the treatment effect and other key explanatory variables.
+
+This regression strengthens the argument that individuals systematically prioritize debt reduction over return maximization, even when doing so leads to lower overall financial gains. The findings support the Debt-Biased Financial Mistakes hypothesis, showing that the psychological burden of debt influences financial decision-making in ways that extend beyond individual error tendencies or external conditions.
+
+
+e) **Broader Behavioral Patterns**
+
+The following visualizations extend the analysis beyond return maximization to explore broader behavioral patterns in financial decision-making. It provides insight into whether participants systematically follow alternative strategies, such as debt repayment prioritization, and how these behaviors differ between treatment groups.
+
+To accurately describe allocation behavior in our upcoming line plots, several data preparation steps are required. Specifically, we need to create a modified version of our dataset mainWork and generate variables that capture the total number of points allocated to each specific account.
+
+To achieve this, we first compute the total points allocated across all decision rounds separately for both initial (ia) and additional (aa) allocations. We then sum these values to obtain the overall total allocation per account. The following transformations ensure that our dataset correctly reflects the cumulative allocation behavior over the course of the experiment.
+
+***Task:*** Please complete the pipe chains correctly and generate the necessary **total_points_..** variables for each account.
+```{r "2_e"}
+# Calculate total points for initial (ia) and additional (aa) allocations.
+mainWork_tot <- ___%>%
+  group_by(idturk) %>%
+  mutate(across(starts_with("points_ia_a"), ~ sum(.x, na.rm = TRUE), .names = "tot_{.col}"),
+         across(starts_with("points_aa_a"), ~ sum(.x, na.rm = TRUE), .names = "tot_{.col}")) %>%
+  ungroup()
+
+# Calculate total points from initial (ia) and additional (aa) total points.
+mainWork_tot2 <- mainWork_tot %>%
+  ___(across(starts_with("tot_points_ia_a"), 
+                ~ .x + get(gsub("tot_points_ia", "tot_points_aa", cur_column())), 
+                .names = "{gsub('tot_points_ia_', 'tot_points_', .col)}"))
+
+```
+
+With the relevant variables now stored in **mainWork_tot**, we can prepare the data for our first line plot. This plot will illustrate the overall allocation behavior of No Debt and Low Debt subjects, specifically focusing on allocations to the highest-interest debt account (Debt 1, 15%) for Low Debt and its corresponding account for No Debt (Savings 3).
+
+To visualize the allocation behavior of No Debt and Low Debt subjects, we first process the dataset **mainWork_tot** by filtering relevant treatment groups and grouping the data by the total points allocated to account 3 (tot_points_a3). We then calculate the percentage distribution within each treatment, replacing zero values with NA to avoid log-scale issues.
+A log scale is used to better visualize differences across orders of magnitude and to prevent small values from being overshadowed by larger ones.
+Treatment labels are assigned for readability. Additionally, key allocation points (0 and 900) are extracted and labeled for better visibility in the final plot.
+
+***Task***: Please run and check the chunk to ensure our data is fully prepared for a clear and well-structured visualization.
+
+```{r "2_e_2"}
+library(ggplot2)
+library(dplyr)
+library(scales)  
+
+# Calculate percentage values per treatment
+data_plotfig3 <- mainWork_tot2 %>%
+  filter(treatment<=1)%>%
+  group_by(treatment, tot_points_a3) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(treatment) %>%
+  mutate(percent = count / sum(count) * 100) %>%  # Prozent pro Treatment-Gruppe
+  mutate(percent = ifelse(percent == 0, NA, percent)) %>%  # 0-Werte in NA umwandeln, damit log funktioniert
+  mutate(treatment_label = factor(treatment, levels = c(0, 1), labels = c("No Debt", "Low Debt")))  # Labels fixen
+
+# Extract key points for better visibility
+highlight_pointsfig3 <- data_plotfig3 %>%
+  filter((tot_points_a3 == 0) | (tot_points_a3 == 900)) 
+
+# Define labels for the key points
+highlight_labelsfig3 <- highlight_pointsfig3 %>%
+  mutate(label = paste0(tot_points_a3, " points\n", round(percent, 2), "%"))
+```
+
+***Task:*** Please run and check the following chunk. As a reminder, this code generates a graph illustrating how participants in the main treatment allocated points between Savings 3 (No Debt) and Debt 1 (Low Debt), both offering a 15% interest rate. A vertical dashed line at 900 points marks the threshold where Debt 1 is fully repaid for Low Debt participants.
+
+```{r "2_e_3",out.width='100%'}
+
+p3.1 <- ggplot(data_plotfig3, aes(x = tot_points_a3, y = percent, 
+                                  color = treatment_label, group = treatment_label,  
+                                  text = paste("Treatment:", treatment_label, "<br>",
+                                               "Points:", tot_points_a3, "<br>",
+                                               "Percentage:", round(percent, 2), "%"))) +
+  geom_line(size = 1) +  
+  geom_point(data = highlight_pointsfig3, 
+             aes(x = tot_points_a3, y = percent, color = treatment_label),  
+             size = 2.5, stroke = 0.8) +  
+  geom_label(data = highlight_labelsfig3, 
+             aes(x = tot_points_a3, y = percent * 1.15, label = label),  
+             fill = "white", color = "black", size = 3.5, 
+             fontface = "bold", hjust = -0.1, label.size = 0.25) +  
+  scale_y_log10(labels = scales::percent_format(scale = 1)) +  
+  scale_x_continuous(limits = c(0, 1700), breaks = seq(0, 1500, 500)) +
+  scale_color_manual(name = "Treatment", values = c("No Debt" = "blue", "Low Debt" = "maroon")) +  
+  labs(
+    x = "Points Allocated Savings 3 (15%) / Debt 1 (15%)
+    \n\nOwn illustration based on Martínez-Marquina, A., & Shi, M., 2024, p. 1154, 'Figure 3'",
+    y = "Percentage of Subjects (log scale)"
+  ) +
+  theme_minimal() +
+  geom_vline(xintercept = 900, linetype = "dashed", color = "black", linewidth = 0.8) +  
+  theme(legend.position = "right")
+
+p3.1
+
+
+```
+
+The x-axis represents the number of allocated points, while the y-axis (logarithmic scale) shows the percentage of participants choosing each allocation level. The dashed vertical line at 900 points represents the initial debt balance in the Low Debt treatment, serving as a critical reference point.
+
+A key observation is the sharp peak at exactly 900 points for Low Debt participants, indicating that a substantial share of subjects prioritized repaying their debt balance precisely to zero rather than allocating funds based on return-maximizing principles. Martínez-Marquina & Shi (2024) report that 33.7% of participants in Low Debt allocated exactly 900 points to Debt 1. We can't observe a similar pattern for the No-Debt group. The authors confirm that this pattern is statistically significant (p < 0.001), **indicating a systematic tendency to prioritize debt elimination over financial optimization**.
+In contrast, allocation behavior in the No Debt group is highly concentrated at 0 points, with 38.4% of participants allocating nothing to Savings 3. Unlike the pronounced peak at 900 points in Low Debt, allocations in No Debt are more dispersed, reflecting greater flexibility in decision-making. While a small amount of No-Debt participants allocate 1,000 points or other amounts, they do not exhibit a singularly dominant repayment-like strategy.
+
+These differences suggest that debt creates a psychological constraint, leading individuals to adopt a rigid repayment approach even when financially suboptimal. The statistically significant gap (p < 0.001) between groups confirms that the presence of debt systematically alters financial decision-making, encouraging a strict focus on repayment rather than a flexible, return-maximizing strategy (Martínez-Marquina & Shi, 2024).
+
+This pattern aligns with the debt-biased financial mistakes hypothesis. Participants in Low Debt allocated significantly more points to Debt 1 than No Debt participants allocated to Savings 3, despite both accounts offering the same 15% return. 
+
+The key implications are the following:
+
+1. The peak at 900 points suggests that individuals frame their financial decisions around debt elimination rather than maximizing returns.
+2. Without debt, individuals explore alternative strategies rather than adhering to a rigid repayment-first mindset.
+3. Debt is not merely a financial constraint but a behavioral bias that systematically alters economic decision-making.
+
+The clear repayment target in Low Debt drives subjects toward a rigid, psychologically motivated strategy, whereas those in No Debt exhibit greater decision-making flexibility. These findings add to the growing body of evidence suggesting that individuals do not always act rational when debt is involved, prioritizing debt reduction even at the expense of maximizing financial returns.
+
+In the next step, we will conduct a similar analysis for the lower-interest Debt 2 account and its corresponding account in the No Debt treatment. The upcoming visualization will feature a dashed vertical line at 1,500 points, indicating the point where Low Debt participants would have fully repaid this additional debt. **The data for this graphic, as well as for similar visualizations in the High Debt treatment, was prepared in a similar manner to the previous one**.
+
+***Task:*** Run the code below and solve the quiz.
+```{r "2_e_4",out.width='100%'}
+
+p3.2 <- ggplot(data_plotfig3.1, 
+               aes(x = tot_points_a4, y = percent, 
+                                    color = treatment_label, group = treatment_label,  
+                                    text = paste("Treatment:", treatment_label, "<br>",
+                                                 "Points:", tot_points_a4, "<br>",
+                                                 "Percentage:", round(percent, 2), "%"))) +
+  geom_line(size = 1) +  
+  geom_point(data = highlight_pointsfig3.1, 
+             aes(x = tot_points_a4, y = percent, color = treatment_label),  
+             size = 2.5, stroke = 0.8) +  
+  geom_label(data = highlight_labelsfig3.1, 
+             aes(x = tot_points_a4, y = percent * 1.1, label = label),  
+             fill = "white", color = "black", size = 3.5, fontface = "bold", hjust = -0.1) +  
+  scale_y_log10(labels = scales::percent_format(scale = 1)) +  
+  scale_x_continuous(limits = c(0, 2800), breaks = seq(0, 2500, 500)) +
+  scale_color_manual(values = c("No Debt" = "blue", "Low Debt" = "maroon")) +  
+  labs(
+    x = "Points Allocated Savings 4 (5%) / Debt 2 (5%)
+    \n\nOwn illustration based on Martínez-Marquina, A., & Shi, M., 2024, p. 1154, 'Figure 3'",
+    y = "Percentage of Subjects (log scale)",
+    color = "Treatment"
+  ) +
+  theme_minimal() +
+  geom_vline(xintercept = 1500, linetype = "dashed", color = "black", linewidth = 0.8) +  
+  theme(legend.position = "right")
+
+
+p3.2
+
+```
+
+
+
+Quiz: What kind of difference in behavior can we observe compared to the plot before?
+
+(1) Fewer subjects in both treatments allocate points to this account.
+(2) More subjects without debt completely repay their debt account.
+(3) The differences do not significantly affect overall behavior.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Debt 2")
+```
+
+Overall, we observe that even participants with debt allocate fewer points to the 5% debt account. Only 27.9% of the Low Debt participants allocated a nonzero amount to this account, compared to 51.2% of No Debt participants. According to the authors the difference is statistically significant (p = 0.002) (Martínez-Marquina & Shi, 2024), indicating that subjects with debt are significantly more likely to avoid allocating points to lower-interest accounts.
+Additionally, compared to Debt 1 in the previous graph, fewer Low Debt participants fully repaid Debt 2. While 33.7% allocated exactly 900 points to Debt 1, only 17.4% allocated the full 1,500 points to Debt 2. This substantial drop in full repayment is also statistically significant (p < 0.001) (Martínez-Marquina & Shi, 2024), reinforcing the hierarchical debt repayment behavior observed in the study.
+
+The authors find that nearly all Low Debt participants who repaid Debt 2 in full had already cleared their balance on Debt 1 first, with 94% following this pattern. This suggests that subjects tend to follow a structured repayment order, prioritizing high-interest loans before lower-interest ones.
+Interestingly, this behavior is not observed in accounts without debt, reinforcing the idea that negative balances are perceived differently and that this perception influences financial decision-making. Many participants appear to adopt a hierarchical approach to repayment, eliminating higher-cost debts first before turning to those with lower financial urgency.
+
+Further supporting this interpretation, subjects were asked to describe their financial strategies at the end of the experiment. The authors found that about 29% of Low Debt participants explicitly stated that they prioritized debt repayment before shifting to return-maximization. This aligns with their observed choices, suggesting that many individuals approach financial decisions in distinct phases:
+
+1. First, fully eliminate existing debt
+2. Only then focus on maximizing returns
+
+This structured decision-making implies that debt repayment is not purely a financial calculation but also a behavioral tendency, potentially driven by the psychological discomfort of owing money.
+To further explore this phenomenon, the authors next examined the High Debt treatment, investigating whether participants would maintain this repayment-first approach when facing a substantially larger outstanding balance.
+
+
+
+## Exercise 2 -- Behaviour with debt
+
+a) **Introduction to the High Debt treatment**
+
+In the High Debt treatment, participants faced larger negative initial balances, making full repayment unachievable. The study hypothesizes that repayment behavior depends on feasibility—when full repayment is possible, participants may prioritize eliminating debt. However, when repayment is out of reach, individuals might either persist in debt repayment or shift focus to return maximization (Martínez-Marquina & Shi, 2024).
+
+***Task:*** Run and check the following chunk to generate Table 2, which summarizes the account structure in the High Debt treatment.
+```{r "3_a"}
+table_2
+```
+
+Table 2 shows that, similar to Low Debt, the Savings 3 and Savings 4 accounts remain locked. However, a crucial difference to Low-Debt is that debt balances and the locked accounts were increased by 2,000 points, while keeping interest rates unchanged. This increase ensures that most participants cannot fully repay even a single debt account.
+Despite this adjustment, the total account balance remained at 4,200 points.
+
+To gain an initial understanding of decision-making under High Debt, we first examine the behavior of a single participant, following the same approach as in the previous exercise.
+
+***Task:*** Write code to select relevant variables, filter for High Debt participants (treatment == 2), and store the result in main2. Then, display the first four rows. Before proceeding, reload the dataset "main_work.csv". If you're unsure which variables to select, click on hint.
+```{r "3_a_2",out.width='100%'}
+# Enter your code here.
+```
+
+The displayed data reveals that the participant initially allocates points between savings and debt repayment but gradually shifts toward prioritizing debt, focusing primarily on Debt 1 while largely ignoring Debt 2.
+This aligns with the study’s hypothesis that debt repayment strategies depend on feasibility—when full repayment is impossible, some individuals continue reducing debt, while others prioritize alternative strategies
+
+However, since this is only one participant, we cannot yet draw general conclusions. To verify whether this pattern is consistent across subjects, we now analyze group-level trends again.
+
+b) **Analyzing Broader Patterns in Debt Repayment**
+
+We analyze group-level debt repayment patterns by visualizing the differences between Low Debt and High Debt participants, akin to exercise e) from the previous task. Our analysis begins with Debt 1 (15%), a debt account in both treatments, serving as a stable reference point.
+In the plot below, note the two dashed vertical lines:
+
+- 900 points marks full repayment of Debt 1 in Low Debt.
+- 2,900 points marks full repayment of Debt 1 in High Debt.
+
+These thresholds allow us to evaluate how participants adapt their strategies based on the feasibility of full repayment.
+
+***Task:*** Please run the following code and interpret the output correctly. 
+```{r "3_b",results='asis', out.width='100%'}
+
+p4.1 <- ggplot(data_plot4.1, aes(x = tot_points_a3, y = percent, 
+                                 color = treatment_label, group = treatment_label,  
+                                 text = paste("Treatment:", treatment_label, "<br>",
+                                              "Points:", tot_points_a3, "<br>",
+                                              "Percentage:", round(percent, 2), "%"))) +
+  geom_line(size = 1) +  
+  geom_point(data = highlight_points4.1, 
+             aes(x = tot_points_a3, y = percent, color = treatment_label),  
+             size = 2.5, stroke = 0.8) +  
+  geom_label(data = highlight_labels4.1, 
+             aes(x = tot_points_a3, y = percent * 1.1, label = label),  
+             fill = "white", color = "black", size = 3.5, 
+             fontface = "bold", hjust = -0.1, label.size = 0.25) +  
+  scale_y_log10(labels = scales::percent_format(scale = 1)) +  
+  scale_x_continuous(limits = c(0, 3300), breaks = seq(0, 3300, 500)) +
+  scale_color_manual(name = "Treatment",  
+                     values = c("Low Debt" = "maroon", "High Debt" = "darkgreen")) +  
+  labs(
+    x = "Points Allocated Debt 1 (15%)
+    \n\nOwn illustration based on Martínez-Marquina, A., & Shi, M., 2024, p. 1155, 'Figure 4'",
+    y = "Percentage of Subjects (log scale)"
+  ) +
+  theme_minimal() +
+  geom_vline(xintercept = 900, linetype = "dashed", color = "black", linewidth = 0.8) +  
+  geom_vline(xintercept = 2900, linetype = "dashed", color = "black", linewidth = 0.8) +  
+  theme(legend.position = "right")
+
+
+p4.1
+
+
+```
+
+
+Quiz: Which statement is correct?
+
+(1) Since fewer points are required to zero out Debt 1 in 'Low Debt', more subjects in this treatment fully repay their debt compared to 'High Debt'.
+(2) Low Debt subjects seem to maximize returns more often because the share of participants allocating zero points to the account presented is higher compared to 'High Debt'.
+(3) Low Debt subjects maximize returns more often since they allocate fewer points to 'Debt 1' on average.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("increasing debt - Debt 1")
+```
+
+The visualization illustrates the distribution of points allocated to Debt 1 (15%) in both the Low Debt and High Debt treatments. The x-axis represents the number of points allocated to Debt 1, while the y-axis (log scale) indicates the percentage of participants making each allocation choice.
+A greater proportion of High Debt participants allocated zero points to Debt 1 (27%), compared to 13% in Low Debt. This suggests that when full repayment is unachievable, some participants may avoid allocating any points to debt altogether.
+The debt closure effect is visible in Low Debt, where 33.72% of participants allocated exactly 900 points, fully repaying their debt. This behavior aligns with behavioral finance research indicating that individuals prefer to completely eliminate debt whenever possible, even if it is not the most financially optimal strategy (Amar et al., 2011; Besharat et al., 2014; Kettle et al., 2016).
+Despite the high repayment burden, 10.47% of High Debt participants allocated exactly 2,900 points, fully repaying Debt 1. However, this extreme approach left them with fewer points for high-return investment opportunities. This suggests that while some abandon repayment when debt is too large, others persist in attempting full repayment, even when it severely limits financial flexibility.
+In Low Debt, a structured repayment pattern emerges, where participants systematically allocate enough points to fully clear Debt 1. In contrast, High Debt participants show a more polarized response—some shift entirely toward return-maximization (zero allocation), while others overcommit to debt repayment at a financial cost. This supports the hypothesis that debt size influences behavioral deviations from payoff-maximizing strategies.
+These findings suggest that the feasibility of full repayment is a major determinant of debt allocation behavior. When repayment is realistic, participants tend to favor structured approaches, such as clearing their debt completely. However, when debt reaches unmanageable levels, individual responses diverge—some prioritize financial optimization by avoiding debt repayment, while others continue repaying despite the negative impact on long-term wealth accumulation.
+
+We now analyze Debt 2 (5%) to assess whether the behavioral differences observed in Debt 1 persist in this lower-interest debt account. Unlike Debt 1, which carried a higher interest rate and thus stronger incentives for repayment, Debt 2 presents a scenario where the financial cost of leaving debt unpaid is lower. This allows us to explore whether participants in the High Debt and Low Debt treatments adjust their strategies accordingly or if the patterns observed in Debt 1 persist.
+
+***Task:*** Please run this chunk and pick the right answer in the quiz.
+```{r "3_b_2",out.width='100%'}
+
+p4.2 <- ggplot(data_plot4.2, 
+               aes(x = tot_points_a4, y = percent, 
+                                 color = treatment_label, group = treatment_label,  
+                                 text = paste("Treatment:", treatment_label, "<br>",
+                                              "Points:", tot_points_a4, "<br>",
+                                              "Percentage:", round(percent, 2), "%"))) +
+  geom_line(size = 1) +  
+  geom_point(data = highlight_points4.2, 
+             aes(x = tot_points_a4, y = percent, color = treatment_label),  
+             size = 2.5, stroke = 0.8) +  
+  geom_label(data = highlight_labels4.2, 
+             aes(x = tot_points_a4, y = percent * 1.1, label = label),  
+             fill = "white", color = "black", size = 3.5, 
+             fontface = "bold", hjust = -0.1, label.size = 0.25) +  
+  scale_y_log10(labels = scales::percent_format(scale = 1)) +  
+  scale_x_continuous(limits = c(0, 2800), breaks = seq(0, 2500, 500)) +
+  scale_color_manual(name = "Treatment",  
+                     values = c("Low Debt" = "maroon", "High Debt" = "darkgreen")) +  
+  labs(
+    x = "Points Allocated Debt 2 (5%)
+    \n\nOwn illustration based on Martínez-Marquina, A., & Shi, M., 2024, p. 1155, 'Figure 4'",
+    y = "Percentage of Subjects (log scale)"
+  ) +
+  theme_minimal() +
+  geom_vline(xintercept = 1500, linetype = "dashed", color = "black", linewidth = 0.8) +  
+  theme(legend.position = "right")
+
+p4.2
+
+```
+
+
+Quiz: What can we derive from the plot?
+
+(1) More Low Debt subjects maximize returns considering allocations to Debt 2.
+(2) In both groups, there are more subjects allocating zero points to Debt 2 compared to Debt 1.
+(3) In Low Debt, fewer subjects allocate zero points to Debt 2 compared to Debt 1.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("increasing debt - Debt 2")
+```
+
+The visualization illustrates the distribution of points allocated to Debt 2 across both treatments. The x-axis represents the number of points allocated to the account, while the y-axis (log scale) indicates the percentage of participants making each allocation choice. A vertical dashed line marks the full repayment threshold for Debt 2 at 1,500 points, providing a reference for understanding participant behavior.
+A key takeaway from the graph is the notable increase in participants allocating zero points to Debt 2 in both treatments, compared to Debt 1. In High Debt, nearly 57% of participants allocated no points to Debt 2, while in Low Debt, the figure stands at 28%. This suggests that participants placed greater priority on repaying higher-interest debt and were more willing to leave lower-interest debt outstanding. The findings align with previous observations, indicating that when full repayment is unfeasible, participants are more likely to shift toward return-maximizing strategies rather than allocating points to debt accounts with lower financial penalties.
+Despite this general tendency, we observe that 17.44% of Low Debt participants allocated exactly 1,500 points, fully repaying Debt 2. This replicates the debt account closure effect seen in Debt 1, where participants prefer to eliminate debt entirely, even if alternative allocation choices might be more financially beneficial. The psychological satisfaction of closing out an account appears to influence decision-making, reinforcing the notion that debt aversion is not purely an economic decision but also a behavioral one.
+In contrast, almost no participants in the High Debt treatment allocated exactly 1,500 points to Debt 2. This suggests that when overall debt burdens are higher and full repayment is unrealistic, participants are more likely to completely forgo repaying lower-interest debts in favor of alternative strategies. The difference between treatments highlights that debt size plays a crucial role in shaping allocation decisions. While some Low Debt participants still opt to eliminate Debt 2, those in High Debt overwhelmingly shift toward return maximization, allocating fewer or no points to the account.
+These findings further suggest that interest rates alone do not fully dictate repayment behavior. If participants strictly followed financial optimization, we would expect a more proportional approach to debt allocation rather than a strong preference for repaying one debt while ignoring another. Instead, the psychological burden of debt itself seems to drive decision-making, reinforcing the idea that individuals respond differently depending on whether full repayment is achievable.
+
+c) **Regression Analysis**
+To determine whether the differences in debt repayment allocations between treatments are statistically significant, we now conduct another regression analysis. This will allow us to assess whether the observed behavioral shifts are systematic effects or simply due to random variation.
+
+In this analysis, we use **share_tot_points_debt** as the dependent variable, representing the proportion of total points allocated to debt repayment. The independent variable of interest is the treatment condition, distinguishing between High Debt and Low Debt participants. As in Exercise 1, we include a set of demographic variables and error_count_total as controls.
+
+If you are interested in the data preparation steps, please refer to the preparation file in the directory.
+
+***Task:*** Complete the regression code below.
+```{r "3_c"}
+
+# create regression model
+model2.1704 <- ___(
+     ___ ~ factor(treatment) +
+    demo_age_median + demo_sex + demo_white + demo_collegeplus +
+    demo_studentloan + demo_holddebt + factor(demo_covid) + error_count_total,
+  data = data_filtered1704
+)
+
+# create robust standard errors
+robust_se5 <- vcovHC(model2.1704, type = "HC1")
+
+# show results
+___(model2.1704,type="text",digits= 7, se = list(sqrt(diag(robust_se5))))
+
+```
+
+Although a greater share of High Debt participants shift toward return-maximization, those who continue prioritizing debt repayment seem to allocate even more points to it than their Low Debt counterparts. According to Martínez-Marquina & Shi (2024), High Debt subjects allocate nearly 9 percentage points (p=0.017) more to overall debt repayment than those in Low Debt, further supporting the hypothesis that some individuals persist in reducing debt even when it results in financial losses.
+
+This pattern underscores how financial decision-making is shaped not only by rational cost-benefit analysis but also by behavioral biases and the psychological discomfort associated with debt. When debt becomes unmanageable, individuals react in different ways—some disengage from repayment entirely, while others continue to focus on debt reduction, even at the expense of long-term financial optimization. The extent to which these behaviors persist will be further explored in the subsequent regression analysis, which aims to show whether the observed differences between treatments are statistically significant.
+Looking at our regression output (which replicated the authors analysis) confirms that treatment status significantly influences debt repayment behavior. Participants in the High Debt treatment allocate, on average, 8.93 percentage points more of their total points toward debt repayment compared to those in Low Debt (β = 0.0893, p < 0.05). This result aligns with previous observations, reinforcing the idea that individuals facing higher outstanding debt tend to prioritize repayment, even when more profitable investment opportunities are available.
+However, the analysis also highlights heterogeneous effects across participants. The demographic control variables do not exhibit statistically significant individual effects, suggesting that debt repayment behavior is not strongly linked to observable demographic characteristics. Instead, the findings point toward psychological and contextual factors as key drivers of financial decision-making under debt constraints.
+While standard errors are higher for some variables, particularly treatment status and demographic controls, this is expected in behavioral experiments where decision-making is heterogeneous. In experimental studies, higher standard errors often arise due to individual differences in decision-making, especially when behavior is influenced by psychological rather than purely economic factors. To account for this, we apply robust standard errors, which help mitigate potential biases from heteroskedasticity, ensuring that significance levels remain valid. Since the treatment effect remains statistically significant at the 5% level, we can interpret the results as evidence of a systematic difference in debt allocation behavior between treatments.
+
+An additional consideration is the relatively low R² value of 0.1085, which indicates that the model explains only 10.85% of the variance in debt repayment behavior. However, this is not a concern in our context. In experimental settings, a lower R² is expected because human financial decision-making is influenced by numerous unobservable factors, such as risk preferences, cognitive biases, and attitudes toward debt. The fact that we still detect a significant treatment effect despite the model's low explanatory power reinforces the robustness of our findings.
+The regression results further support the hypothesis that individuals facing larger, unmanageable debt burdens allocate more resources toward debt repayment. However, as observed in previous exercises, this response is not universal. While some participants prioritize debt reduction, others shift toward return-maximizing strategies, particularly when full repayment is infeasible.
+
+
+The One-Shot Robustness Treatment provides further validation for these findings by isolating the effect of debt presence on financial decision-making. In this experiment, participants faced three different debt conditions: no debt, a moderate initial negative balance (Low Debt), or a significantly larger negative balance (High Debt). The results indicate that return-maximization behavior was significantly more common in the No Debt scenario, where participants allocated a greater share of their points to high-return investments rather than debt repayment. In contrast, those in both debt conditions exhibited a stronger tendency to allocate points toward debt reduction, even when it was not the most financially beneficial strategy. This suggests that beyond the size of the debt, its mere presence influences decision-making, leading participants to prioritize debt repayment despite more profitable alternatives. These findings reinforce the idea that debt aversion is a psychological factor that shapes financial behavior, independent of strict cost-benefit calculations (Martínez-Marquina & Shi, 2024, p. 1159).
+
+
+
+
+## Exercise 3 -- Additional treatments
+
+In this exercise, we will analyze how financial decision-making changes when participants have the option to redistribute balances between accounts or borrow additional funds. By examining the Redistribution and Borrowing Treatments, we can explore whether individuals strategically adjust their allocations when given more flexibility or if they continue to exhibit debt-biased financial behavior.
+
+a) **Redistribution Treatment**
+The Redistribution Treatment introduces an additional layer of financial flexibility, allowing participants to reallocate balances between Savings 1 and Savings 2. This experimental variation helps evaluate whether subjects strategically adjust their allocations to optimize returns or if they continue to exhibit debt-biased financial behavior (Martínez-Marquina & Shi, 2024).
+
+First, take a look at the different accounts for the Redistribution Treatment in the following table.
+
+***Task:***  Please check the following chunk to show the table.
+```{r "4_a",out.width='100%'}
+table_3
+```
+
+Table 3 highlights key differences in financial constraints between the Redistribution Debt and Redistribution No-Debt groups. The Redistribution Debt treatment mirrors the Low Debt condition but allows subjects to transfer balances between certain accounts. This flexibility enables participants to increase returns but also gives them the option to reduce debt through redistribution.
+
+However, reallocating funds from Savings 1 (20%) to Debt 2 (5%) lowers the debt balance but significantly reduces potential earnings. If a participant fully reallocates Savings 1 to Debt 2 at the beginning, the resulting low returns can make full debt repayment impossible in later periods. Conversely, following a return-maximizing strategy allows participants to fully repay both debt accounts by Day 4.
+
+The Redistribution No-Debt treatment serves as a control group, where participants face an identical account structure but cannot use redistribution to reduce debt directly. Their debt accounts remain locked, ensuring that any behavioral differences arise purely from the presence of debt rather than differences in allocation flexibility (Martínez-Marquina & Shi, 2024).
+
+Now, we want to analyze subjects' decision-making and key behavioral differences in the Redistribution Treatment.
+
+***Task***: Run the given code below and answer the quiz based on the resulting tables.
+```{r "4_a_2"}
+#read in redistribution data
+redWork<-read_csv("redistribution_work.csv")
+
+#filter and select
+red0<-redWork%>%filter(treatment==0 & day>0)%>%select(idturk,day,treatment, initialendowment, initialendowmentupdated, pointssaving1,pointssaving2, pointssaving3, pointssaving4, pointsdebt1, pointsdebt2)
+red1<-redWork%>%filter(treatment==1 & day>0)%>%select(idturk,day,treatment, initialendowment, initialendowmentupdated, pointssaving1,pointssaving2, pointssaving3, pointssaving4, pointsdebt1, pointsdebt2)
+
+#show results
+head(red0,4)
+head(red1,4)
+```
+Please note that in this and the following Borrowing Treatment, we use the **idturk** variable instead of **participantid**. While both serve as unique identifiers, the **participantid** variable is not available in the datasets for these treatments, necessitating the use of **idturk**.
+The variable **initialendowmentupdated** represents the total points available after redistribution. Comparing it to **initialendowment** allows us to determine how many points were reallocated.
+
+The first section of the table shows data from a participant in the Redistribution No-Debt treatment. Here, debt accounts remain locked, meaning no direct debt reduction is possible. The fact that **initialendowmentupdated** is identical to **initialendowment** across all four days confirms that this participant chose not to redistribute points from Savings 2 to Savings 1. Instead, all available points were allocated to Savings 1, resulting in a suboptimal strategy given that redistribution could have further increased returns.
+
+The second section presents data from a participant in the Redistribution Debt treatment, where Savings 3 and Savings 4 remain locked. Unlike in the No-Debt condition, this participant actively redistributed points in every round, as shown by the higher **initialendowmentupdated** values compared to **initialendowment**. This indicates an attempt to optimize financial allocations, though not necessarily in a fully return-maximizing manner. While debt repayment was possible through redistribution, the participant did not allocate all redistributable points to Savings 1, which would have maximized returns.
+
+
+Quiz: Which of the two subjects acted in a fully return-maximizing way?
+
+(1) Neither of them.
+(2) The participant in Redistribution No-Debt.
+(3) The participant in Redistribution Debt.
+(4) Both.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("redistribution treatment")
+```
+
+After answering the quiz, reflect on the financial decisions made by each participant. The key to identifying a fully return-maximizing strategy lies in how efficiently participants allocate points across accounts with varying interest rates.
+In the Redistribution No-Debt treatment, the participant allocated all available points to Savings 1, which offers the highest return. However, redistribution options were not utilized, meaning the opportunity to move funds from Savings 2 to Savings 1—which would have increased returns—was overlooked.
+In the Redistribution Debt treatment, the participant actively reallocated points across multiple accounts, including debt repayment. While this approach suggests a deliberate redistribution strategy, the question remains: Was it optimal? The highest possible returns would have been achieved by allocating all redistributable points to Savings 1, which was not done here.
+By considering these factors, we see that neither participant strictly followed the fully return-maximizing strategy—one failed to optimize redistribution, while the other diversified allocations in a way that did not maximize long-term gains.
+
+
+Now, we will compare total returns across treatment groups in the Redistribution Treatment. This comparison allows us to identify differences in financial outcomes between participants in the Redistribution Debt and Redistribution No-Debt groups.
+
+***Task:*** Run the code and answer the question.
+```{r "4_a_3",out.width='85%'}
+
+# 
+ggplot(df_cumul6, aes(x = cum_total_returns, y = prob, color = treatment_label)) +
+  geom_line(size = 0.9) +
+  scale_color_manual(
+    values = c("Redistribution No-Debt" = "#1f497d",  
+               "Redistribution Debt" = "#a52a2a")  
+  ) +
+  scale_x_continuous(breaks = seq(1300, max(df_cumul6$cum_total_returns, na.rm = TRUE), 500)) +  
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.2)) +  
+  labs(
+    x = "Total returns
+    \n\nOwn illustration based on Martínez-Marquina, A., & Shi, M., 2024, p. 1158, 'Figure 6'",
+    y = "Pr (total returns < x)",
+    color = "Treatment"  
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    legend.title = element_text(face = "bold"),
+    axis.title.y = element_text(size = 12),
+    axis.title.x = element_text(size = 12)
+  ) +
+  geom_vline(xintercept = 2263, linetype = "dashed", color = "black")  
+
+```
+
+To correctly interpret the graphic, please consider the following:
+
+The y-axis represents the percentage of subjects per treatment group.
+The x-axis displays total returns.
+The vertical dashed line marks the worst possible return without redistribution.
+The highest observed total return is 3,436 points, achieved by consistently allocating all points to Savings 1 throughout the experiment.
+
+
+
+Quiz: Which key finding can we derive from this line plot?
+
+(1) Subjects in the Redistribution Debt group generate higher total returns than those in Redistribution No-Debt.
+(2) Subjects in Redistribution No-Debt attain the highest possible total return more often than participants in Redistribution Debt.
+(3) Subjects in Redistribution No-Debt perform worse than those in Redistribution Debt.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("redistribution returns")
+```
+
+Another key takeaway from the plot is that subjects in the Redistribution Debt treatment are more likely to generate lower returns than the worst possible outcome without redistribution. The proportion of participants earning below 2,263 points is noticeably higher in Redistribution Debt compared to Redistribution No-Debt. According to Martínez-Marquina & Shi (2024), this difference is approximately 11 percentage points (21% in Redistribution Debt vs. 10% in Redistribution No-Debt). While this suggests that some participants in the Borrow-Debt treatment made financially suboptimal choices, the effect is only marginally significant (p = 0.059), meaning it does not meet the conventional threshold for strong statistical certainty.
+The redistribution option does not necessarily benefit all participants. In principle, participants could have maximized their returns by transferring all available funds to Savings 1, the highest-interest account. The plot shows that more participants in Redistribution No-Debt reach the highest observed return compared to those in Redistribution Debt. According to the authors, approximately 30% of subjects without debt achieve this optimal outcome, whereas only about 12% of subjects with debt do the same. According to the authors, this difference is statistically significant (p = 0.005), meaning that participants in Redistribution No-Debt are more than twice as likely to reach the highest return as those in Redistribution Debt.
+For participants in the Redistribution Debt treatment, however, the optimal strategy would have differed. Instead of prioritizing early debt repayment, a return-maximizing approach would involve accumulating higher returns first and repaying debt later. However, the study finds that no participants actually followed this strategy. Instead, most allocated early redistributions toward debt reduction, which lowered overall returns and still left many with outstanding debt balances at the end of the experiment.
+This reinforces a key behavioral insight: even when given more financial flexibility through redistribution, participants in Redistribution Debt fail to use it effectively. The tendency to prioritize debt repayment over maximizing returns reflects a broader debt-averse bias observed throughout the experiment. Rather than delaying debt repayment to capitalize on higher interest rates, many participants made premature repayment decisions that ultimately reduced their total wealth. This finding aligns with the broader conclusions of Martínez-Marquina & Shi (2024), demonstrating that debt aversion can lead individuals to deviate from purely payoff-maximizing financial strategies, even when more optimal alternatives are available.
+
+b) **The Borrowing Treatment**
+
+The Borrowing Treatment examines whether the presence of debt affects borrowing behavior. Importantly, both groups face the same borrowing limits, interest rates, and return-maximizing opportunities, meaning that any differences in behavior must stem purely from the framing of borrowing as "savings" vs. "debt." This allows us to directly measure the psychological impact of debt framing on financial decision-making. To test this, participants were allowed to increase their point endowment by borrowing from their locked accounts before making allocation decisions.
+
+***Task:*** Run the following chunk to display Table 4.
+The minimum allowable balances (shown in parentheses) represent the maximum borrowing limits for each account.
+```{r "4_b",out.width='100%'}
+table_4
+```
+
+
+The Borrow Debt group was able to borrow points from Debt 1 and Debt 2, which initially had zero balances. Borrowing caused these accounts to turn negative, effectively increasing available points at the expense of future repayment obligations. In contrast, the Borrow Savings group—serving as a control—could only borrow from Savings accounts, allowing for a direct comparison between borrowing behavior in debt and non-debt settings.
+
+Borrowing occurred before the allocation phase of each decision round, meaning participants had to decide in advance how much to borrow before determining where to allocate funds.
+
+To maximize returns, participants should have borrowed the maximum allowable amount and allocated it to Savings 1 (20%), the highest-yielding account. However, if they instead borrowed and allocated funds to lower-yielding accounts, they effectively diminished their overall returns, making their borrowing decision financially suboptimal. This setup allows us to explore whether debt-averse participants borrow less aggressively or allocate borrowed funds inefficiently, reinforcing the patterns observed in previous treatments.
+
+***Task***: In this task, we will create a similar code for the borrowing treatment. 
+Just run the given code below and answer the quiz.
+```{r "4_b_2",out.width='100%'}
+#load data
+borrowWork<-read_csv("borrowing_work.csv")
+
+#modify data
+borrow0<-borrowWork%>%filter(treatment==0)%>%select(idturk,day,treatment, initialendowment, initialendowmentupdated, pointssaving1,pointssaving2, pointssaving3, pointssaving4, borrowsaving5, borrowsaving6)
+borrow1<-borrowWork%>%filter(treatment==1)%>%select(idturk,day,treatment, initialendowment, initialendowmentupdated, pointssaving1,pointssaving2, pointssaving3, pointssaving4, borrowdebt1, borrowdebt2)
+
+#show data
+head(borrow0,4)
+head(borrow1,4)
+```
+
+In the resulting tables, the two variables **borrow...** at the end of each table indicate how many points the participant borrowed from specific locked accounts.
+
+The first table presents data from a participant in the Borrow-Savings treatment. This subject borrowed points from Savings 5 and Savings 6, but the total borrowed amount varies across periods. Additionally, the participant distributed the borrowed points across multiple accounts instead of concentrating them in a single high-return account.
+
+The second table shows data from a participant in the Borrow-Debt treatment. Unlike the previous participant, this subject did not borrow any points from Debt 1 or Debt 2 throughout the experiment. Instead, the participant allocated the available points across multiple accounts, with Savings 1 receiving the largest share.
+
+
+Quiz: Which of the two subjects followed a completely return-maximizing strategy?
+
+(1) Neither of them.
+(2) The participant in Borrow-Debt.
+(3) The participant in Borrow-Savings.
+(4) Both participants.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("borrowing treatment")
+```
+
+Looking at the participants’ allocation strategies, we can assess how closely they adhered to a return-maximizing approach. A fully optimal strategy would require borrowing the maximum allowable amount and investing it entirely in the highest-yielding account, Savings 1 (20%). However, both participants deviated from this strategy in different ways.
+One participant chose not to borrow at all, missing the opportunity to invest additional funds into high-return accounts. The other borrowed less than the maximum amount and spread allocations across multiple accounts, instead of focusing entirely on Savings 1. These choices resulted in lower overall returns than what would have been possible under a strictly optimal strategy.
+This highlights that even when given the flexibility to borrow, participants do not always make the most financially efficient choices, suggesting a behavioral bias in their decision-making.
+
+Now we will analyse, whether the existence of debt influences borrowing decisions or not.
+
+***Task:*** Please run the code and solve the quiz about the resulting plot.
+```{r "4_b_3",out.width='85%'}
+
+#create barplot
+plotb <- ggplot(summary_combined, 
+                aes(x = spacing, y = mean_borrow_max_both, fill = factor(treatment))) +
+  geom_bar(stat = "identity", width = 0.3, position = position_dodge(width = 0.3)) +
+  scale_fill_manual(values = c("0" = "blue", "1" = "maroon"), 
+                    labels = c("Borrow Savings", "Borrow Debt")) +
+  geom_errorbar(aes(ymin = lowrite, ymax = hiwrite), width = 0.2, color = "black", alpha = 0.5) +
+  
+  
+  geom_text(aes(label = round(mean_borrow_max_both*100)), 
+            position = position_dodge(width = 0.3), 
+            vjust = -0.5,hjust = -0.2, size = 4) +
+  labs(
+    y = "Percent of Subjects",
+    x = "\nOwn illustration based on Martínez-Marquina, A., & Shi, M., 2024, p. 1159, 'Figure 7'",
+    fill = NULL
+  ) +
+  scale_x_continuous(
+    breaks = c(0.3625, 1.9625),
+    labels = c("All Subjects", "Only Max Returns"),
+    limits = c(-0.1, 2.5)
+  ) +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+  theme_minimal() +
+  theme(
+    legend.position = "right",
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+print(plotb)
+```
+
+The code generates a bar chart that visualizes the percentage of subjects who borrowed the maximum amount from both available accounts. On the left side, the chart displays borrowing behavior across all participants in the two of the treatment groups. On the right side, it focuses only on those who consistently followed a return-maximizing strategy in all allocation decisions. The bars for Borrow-Debt include error bars to illustrate within-group variation.
+
+
+Quiz: What can we derive from the plot?
+
+(1) When debt is involved, subjects borrow the maximum amount more often.
+(2) When Debt is not involved, subjects borrow the maximum amount more often.
+(3) The plot does not provide any useful information about borrowing behavior.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("borrowing with debt")
+```
+
+The plot reveals a clear distinction between the two treatment groups. Subjects in the Borrow-Savings treatment are substantially more likely to borrow the maximum allowable amount than those in Borrow-Debt. The difference is substantial, with 62% of Borrow-Savings participants borrowing the full amount, compared to only 34% in Borrow-Debt. The authors claim that this effect is highly significant (p < 0.001) (Martínez-Marquina & Shi, 2024).
+The right side of the plot further reinforces this finding. Even among participants who otherwise follow a strictly return-maximizing strategy, the framing of borrowing as "debt" continues to exert a strong influence. While 96% of those in Borrow-Savings borrow the full amount, only 46% of those in Borrow-Debt do the same. This suggests that the mere labeling of borrowing as "debt" significantly affects financial decision-making, leading participants to borrow less even when it would be financially optimal.
+
+The researchers identify two primary patterns in borrowing behavior. First, subjects tend to adopt an all-or-nothing approach, either borrowing the full amount or not borrowing at all. Second, participants in Borrow-Debt appear to be more sensitive to interest rates than those in Borrow-Savings. This is evident in their borrowing preferences: in Borrow-Debt, participants are less likely to borrow from the high-interest account (15%) than from the low-interest account (5%), with borrowing rates of 38% and 52%, respectively (p = 0.004) (Martínez-Marquina & Shi, 2024). In contrast, participants in Borrow-Savings borrow from both accounts at much higher rates, with only 8% avoiding borrowing from the high-interest account. However, when borrowing is framed as debt, this avoidance rate increases sharply, with 46% of Borrow-Debt participants choosing not to borrow from the high-interest account according to the authors.
+As a result of these differences, the authors state that participants in Borrow-Debt tend to borrow significantly less overall, even when borrowing would increase their financial returns. This reluctance has a direct impact on earnings, as Borrow-Savings participants earn, on average, 5% more than those in Borrow-Debt (p = 0.047). However, when borrowing behavior is controlled for, this return gap disappears (p = 0.854), confirming that reluctance to borrow—rather than poor allocation of borrowed funds—is the primary driver of the observed financial disparities.
+
+These findings strongly support the notion that debt aversion prevents individuals from seizing profitable financial opportunities. Previous results primarily focused on suboptimal debt repayment decisions, but this analysis demonstrates that similar biases extend to borrowing choices as well. Even among those who typically optimize returns, many participants exhibit a strong reluctance to take on debt, even when doing so would be beneficial. The fact that simply framing borrowing as "debt" results in significantly lower borrowing rates underscores the profound psychological impact of debt framing on financial decision-making.
+
+
+
+## Exercise 4 -- Debt Aversion 
+
+a) **Debt Aversion: A Literature Review**
+
+Debt aversion refers to the tendency to avoid borrowing, even when taking on debt would lead to financially advantageous outcomes. Traditional economic theory assumes that individuals make borrowing decisions based on rational cost-benefit analyses, but behavioral research suggests that psychological biases strongly influence debt-related behavior. Studies indicate that individuals often prioritize debt repayment over investment, even when investing would generate higher financial returns (Gathergood et al., 2019).
+
+Empirical research confirms that debt aversion distorts financial choices. Martínez-Marquina and Shi (2024) provide experimental evidence demonstrating that individuals allocate fewer resources to high-return investments when they have outstanding debt. Even when borrowing would lead to guaranteed financial benefits, many individuals refuse to take on debt, revealing a preference for avoiding indebtedness over optimizing financial outcomes. Similarly, Gathergood et al. (2019) show that many borrowers follow suboptimal repayment strategies, preferring to distribute payments evenly across multiple debts rather than prioritizing high-interest loans. These findings support the broader argument that debt-related decisions are shaped by behavioral tendencies rather than purely rational financial considerations (Martínez-Marquina & Shi, 2024).
+
+Beyond personal finance, debt aversion influences investment in education and entrepreneurship, where borrowing is often crucial for long-term financial success. Callender and Jackson (2005) find that students from low-income backgrounds are especially reluctant to take on student loans, despite strong evidence that higher education significantly increases lifetime earnings. Similarly, research on small business financing finds that many entrepreneurs reject loans that could enhance business growth, primarily due to a psychological discomfort with debt rather than financial constraints (Nguyen et al., 2020). These findings suggest that debt aversion has broader economic consequences, particularly in areas where borrowing could significantly improve financial well-being.
+
+While existing research highlights the negative effects of debt aversion, open questions remain about how this behavior interacts with income expectations, financial literacy, and risk preferences. Understanding the psychological and cognitive mechanisms behind debt aversion is crucial for developing policy interventions that can help individuals make more rational borrowing and repayment decisions. Future research should explore alternative loan structures, such as income-based repayment plans or debt-forgiveness incentives, to alleviate the psychological burden of borrowing. Additionally, financial education programs and behavioral nudges could help individuals recognize the long-term benefits of strategic borrowing, allowing them to make financial choices based on economic rationality rather than fear of debt.
+
+By addressing these behavioral barriers, policymakers and financial institutions can work toward reducing the negative effects of debt aversion and encouraging individuals to leverage credit as a tool for economic mobility, business growth, and wealth accumulation.
+
+b) **Summary: Theoretical Model for Quantifying Debt Aversion**
+
+Martínez-Marquina and Shi (2024) introduce a theoretical model of debt aversion, incorporating a debt aversion parameter (λ) to quantify how individuals psychologically perceive and respond to debt. Their model demonstrates that individuals systematically overweight the burden of debt, perceiving each dollar of debt as $1.03–$1.07 in savings, leading them to prioritize debt repayment over investment, even when investment opportunities offer higher financial returns. The model further categorizes individuals into three distinct types based on their level of debt aversion: non-debt-averse individuals, who invest optimally; moderately debt-averse individuals, who prioritize repaying high-interest debt before investing; and highly debt-averse individuals, who avoid investing entirely until all debt is repaid, often leading to missed profitable opportunities.
+
+The authors apply their theoretical model within the experimental setting, using it to explain the financial behavior of participants. The fact that the model’s predictions match the observed experimental behavior strengthens the causal link between debt aversion and financial decision-making. 
+Causality is further supported by the random assignment of debt conditions in the experiment, which minimizes selection bias and ensures that observed differences in behavior can be attributed to debt exposure rather than pre-existing individual characteristics. Additionally, by applying the theoretical model within the experimental framework, the study strengthens the causal interpretation of its findings, demonstrating that debt aversion plays a direct role in shaping borrowing and investment decisions.
+
+
+Quiz: What is debt aversion?
+
+(1) A preference for avoiding or quickly repaying debt, even when financially suboptimal.
+(2) A tendency to maximize borrowing at any cost.
+(3) A rational strategy based purely on interest rates.
+(4) The exclusive use of savings for all financial decisions.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Debt Aversion 1")
+```
+
+
+Quiz: According to behavioral research, why do individuals prioritize debt repayment over investment?
+
+(1) Because repaying debt always provides a higher return than investing.
+(2) Due to psychological biases that influence financial decision-making.
+(3) Because traditional economic theory suggests avoiding debt is always optimal.
+(4) Because banks encourage early repayment.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Debt Aversion 2")
+```
+    
+    
+
+Quiz: What are key findings on Debt Aversion reported by Martínez-Marquina & Shi (2024)?
+
+(1) Many participants avoid investment if it involves taking on debt.
+(2) Framing borrowing as 'debt' significantly reduces participants' willingness to borrow, even when it would maximize financial returns.
+(3) Many participants prioritize debt repayment, even at the cost of financial gains.
+(4) All of the previous.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Debt Aversion 3")
+```
+
+
+## Exercise 5 -- Conclusion
+
+Martínez-Marquina and Shi (2024) present empirical evidence that debt aversion significantly impacts financial decision-making by causing individuals to prioritize debt repayment at the expense of profitable investments. Their experimental findings indicate that individuals with outstanding debt systematically allocate fewer resources to high-return investments. Even when borrowing guarantees financial benefits, many participants refused to take on debt, illustrating a clear preference for avoiding indebtedness rather than maximizing returns. The study further confirms that individuals facing debt conditions were notably less likely to borrow, even when interest rates and investment opportunities remained unchanged. This reluctance led to lower overall financial payoffs, showing that debt-averse behavior extends beyond repayment decisions and actively hinders long-term wealth accumulation.
+
+The redistribution treatment further illustrates how debt-biased behavior exacerbates financial losses when individuals are given greater flexibility in reallocating their savings. One-third of participants used redistribution primarily to repay debt, while 20 percent ended up with lower returns than if they had not redistributed their balances at all. This finding underscores that individuals, even when given the opportunity to optimize their financial outcomes, often default to eliminating debt rather than maximizing total wealth (Martínez-Marquina & Shi, 2024).
+The study is particularly significant because it provides causal evidence that debt exposure directly affects borrowing and investment behavior. 
+
+In light of these findings, the study suggests several policy interventions to mitigate the effects of debt aversion. One proposed measure is debt relief and forgiveness programs, which not only reduce financial burdens but have also been shown to improve cognitive capacity, financial decision-making, and risk-taking behaviors by alleviating the psychological stress associated with debt. Another policy measure is reframing borrowing opportunities, as research suggests that presenting financial aid as grants rather than loans increases uptake, implying that modifying the framing of educational and business loans could help encourage rational borrowing choices (Martínez-Marquina & Shi, 2024).
+
+Beyond these recommendations, additional policy measures could further reduce the impact of debt aversion. Behavioral nudges and financial education programs that emphasize the long-term benefits of investment while correcting misconceptions about debt could enhance financial literacy and decision-making. Expanding access to regulated, low-interest credit, particularly for students and entrepreneurs, could also help individuals overcome psychological barriers to borrowing while ensuring financial security. Furthermore, raising awareness of the debt-free premium, where individuals irrationally prioritize being completely debt-free over wealth maximization, could help people make more balanced financial decisions.
+
+Overall, Martínez-Marquina and Shi (2024) provide valuable insights into how debt aversion influences financial decision-making. By combining empirical analysis with experimental validation, the study offers a robust framework for understanding how individuals react to debt and how policy interventions could correct financially suboptimal behavior. Addressing these challenges through improved financial products, behavioral interventions, and targeted policy reforms could enable individuals to make better-informed financial choices, ultimately promoting economic mobility, business expansion, and long-term financial stability.
+
+## Exercise References
+
+- Amar, M., Ariely, D., Ayal, S., Cryder, C. E. and Rick, S. I. (2011) ‘Winning the battle but losing the war: The psychology of debt management’, Journal of Marketing Research, 48(SPL), pp. S38–S50.
+
+- Besharat, A., Carrillat, F. A. and Ladik, D. M. (2014) ‘When motivation is against debt reduction: The impact of goal framing on consumer debt repayment decisions’, Journal of Public Policy & Marketing, 33(2), pp. 143–158.
+
+- Callender, C. and Jackson, J. (2005) ‘Does the fear of debt deter students from higher education?’, Journal of Social Policy, 34(4), pp. 509-540. Available at: https://doi.org/10.1017/S004727940500913X.
+
+- Gathergood, J., Mahoney, N., Stewart, N. and Weber, J. (2019) ‘How do individuals repay their debt? The balance-matching heuristic’, American Economic Review, 109(3), pp. 844-875. Available at: https://doi.org/10.1257/aer.20180288.
+
+- Kettle, K. L., Trudel, R., Blanchard, S. J. and Häubl, G. (2016) ‘Repayment concentration and consumer motivation to get out of debt’, Journal of Consumer Research, 43(3), pp. 460–477.
+
+- Martínez-Marquina, A. and Shi, M. (2024) ‘The Opportunity Cost of Debt Aversion’, American Economic Review, 114(4), pp. 1140–1172. Available at: https://doi.org/10.1257/aer.20221509.
+
+- Nguyen, H. T., Freeman, J. and Gelb, D. (2020) ‘Entrepreneurial financing and debt aversion: Behavioral insights from small business owners’, Journal of Business Venturing Insights, 13, e00159. Available at:                                                            https://doi.org/10.1016/j.jbvi.2020.e00159.
+
+- Prelec, D. and Loewenstein, G. (1998) ‘The Red and the Black: Mental Accounting of Savings and Debt’, Marketing Science, 17(1), pp. 4–28. Available at: https://doi.org/10.1287/mksc.17.1.4.
+
+- Thaler, R. H. (1985) ‘Mental accounting and consumer choice’, Marketing Science, 4(3), pp. 199–214. Available at: https://doi.org/10.1287/mksc.4.3.199.
+
+- Wooldridge, J. M. (2020) Introductory Econometrics: A Modern Approach. 7th edn. Cengage Learning.
+
+## Exercise R packages
+
+- Wickham, H., Vaughan, D. & Girlich, M. (2024). tidyr: Tidy Messy Data. R package version 1.3.1. Available at: https://CRAN.R-project.org/package=tidyr [Accessed 3 March 2025]
+
+- Wickham, H. (2016) ggplot2: Elegant graphics for data analysis. Springer-Verlag New York. https://ggplot2.tidyverse.org
+
+- Hlavac, M. (2022) stargazer: Well-Formatted Regression and Summary Statistics Tables. R package version 5.2.3.https://CRAN.R-project.org/package=stargazer
+
+- Wickham, H., François, R., Henry, L., Müller, K. and Vaughan, D. (2023) dplyr: A Grammar of Data Manipulation. R package version 1.1.4.https://CRAN.R-project.org/package=dplyr
+
+- Zeileis, A. (2004) ‘Econometric computing with HC and HAC covariance matrix estimators’, Journal of Statistical Software, 11(10), pp. 1–17. Available at: https://doi.org/10.18637/jss.v011.i10
+
+- Zeileis, A., Köll, S. and Graham, N. (2020) ‘Various versatile variances: An object-oriented implementation of clustered covariances in R’, Journal of Statistical Software, 95(1), pp. 1–36. Available at: https://doi.org/10.18637/jss.v095.i01
+
+- Kranz, S. (2020) RTutor: Interactive R problem sets with automatic testing of solutions and automatic hints. R package version 2020.11.25, commit 4502cab94cb9233e4b11aab42b29f6d2b0576113. Available at: https://github.com/skranz/RTutor
+
+- Wickham, H., Hester, J. and Bryan, J. (2024) readr: Read Rectangular Text Data. R package version 2.1.5. Available at: https://CRAN.R-project.org/package=readr
+
+- Wickham, H., Pedersen, T. and Seidel, D. (2023) scales: Scale Functions for Visualization. R package version 1.3.0. Available at: https://CRAN.R-project.org/package=scales
+
+- Xie, Y. (2024) knitr: A General-Purpose Package for Dynamic Report Generation in R. R package version 1.49. Available at: https://yihui.org/knitr/
+
+- Zhu, H. (2024) kableExtra: Construct Complex Table with 'kable' and Pipe Syntax. R package version 1.4.0. Available at: https://CRAN.R-project.org/package=kableExtra
+
+- Chang, W., Cheng, J., Allaire, J., Sievert, C., Schloerke, B., Xie, Y., Allen, J., McPherson, J., Dipert, A. and Borges, B. (2024) shiny: Web application framework for R. R package version 1.10.0. Available at: https://CRAN.R-project.org/package=shiny
