@@ -6,7 +6,16 @@ Here, you will explore the influence of debt on financial decisions through an i
 
 You can access the paper here: https://doi.org/10.1257/aer.20221509
 
-To get the problem set started, simply follow the steps below.
+Please note that you may need to change your version of the R package 'markdown' to display the problem set graphics correctly. Version 1.5 worked for me. You can do this with the 'remotes' package by typing the following in your console:
+
+```s
+# Install remotes package if not already installed
+install.packages("remotes")
+
+# Install markdown version 1.5 from the CRAN archive
+remotes::install_version("markdown", version = "1.5", repos = "http://cran.r-project.org")
+```
+You should do this after following the steps below: 
 
 ## 1. Installation
 
