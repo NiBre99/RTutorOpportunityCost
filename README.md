@@ -1,6 +1,6 @@
 This package constitutes an interactive R problem set based on the RTutor package (https://github.com/skranz/RTutor). 
 
-This is an interactive problem set based on the paper The Opportunity Cost of Debt Aversion, published by Mike Shi and Alejandro Martínez-Marquina in 2024.
+This is an interactive problem set based on the paper "The Opportunity Cost of Debt Aversion", published by Mike Shi and Alejandro Martínez-Marquina in 2024.
 
 Here, you will explore the influence of debt on financial decisions through an interactive learning experience in R.
 
